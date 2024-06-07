@@ -1,0 +1,3 @@
+fastembed
+llama-index-llms-ollama
+
