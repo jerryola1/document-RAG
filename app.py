@@ -276,3 +276,29 @@ if "query_engine" in st.session_state:
 
         # Add assistant response to chat history
         st.session_state.messages.append({"role": "assistant", "content": full_response})
+
+
+ # Accept user input
+    if prompt := st.chat_input("Ask something about the document ..."):
+        # Add user message to chat history
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        # Display user message in chat message container
+        with st.chat_message("user"):
+            st.markdown(prompt)
+
+        # Display assistant response in chat message container
+        with st.chat_message("assistant"):
+            message_placeholder = st.empty()
+            full_response = ""
+            
+            # Simulate stream of response with milliseconds delay
+            streaming_response = st.session_state.query_engine.query(prompt)
+            
+            for chunk in streaming_response.response_gen:
+                full_response += chunk
+                message_placeholder.markdown(full_response + "▌")
+
+            message_placeholder.markdown(full_response)
+
+        # Add assistant response to chat history
+        st.session_state.messages.append({"role": "assistant", "content": full_response})
